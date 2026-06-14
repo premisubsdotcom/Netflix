@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Random Mail</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="wrap mail-page">
+    <section class="card hero compact-hero">
+      <div class="top-only-action">
+        <a class="btn secondary" href="/url">URL Shortner</a>
+      </div>
+      <h1>Random Mail Generator</h1>
+      <p>Generate a random mail first. It will be saved only after you click Add.</p>
+    </section>
+
+    <% if(error){ %><div class="alert error"><%= error %></div><% } %>
+    <% if(ok){ %><div class="alert ok"><%= ok %></div><% } %>
+
+    <section class="card">
+      <h2>Generated email</h2>
+
+      <% if(generated){ %>
+        <div class="copybox">
+          <input id="mail" value="<%= generated.email %>" readonly>
+          <button type="button" onclick="copyText('mail')">Copy</button>
+        </div>
+
+        <form method="post" action="/mail/add-generated" class="form stacked-form">
+          <input type="hidden" name="email" value="<%= generated.email %>">
+          <input type="hidden" name="domain" value="<%= generated.domain %>">
+          <button type="submit">Add to database</button>
+        </form>
+
+        <form method="post" action="/mail/generate" class="form stacked-form">
+          <button type="submit" class="secondary">Generate another</button>
+        </form>
+
+        <p class="muted">Preview only. Domain: <b><%= generated.domain %></b></p>
+      <% } else { %>
+        <form method="post" action="/mail/generate" class="form stacked-form">
+          <button type="submit">Generate new mail</button>
+        </form>
+        <p class="muted">It will not generate on page refresh.</p>
+      <% } %>
+    </section>
+
+    <section id="addDomainBox" class="card hidden-panel">
+      <h2>Add domain</h2>
+      <form method="post" action="/mail/add-domain" class="form">
+        <input name="domain" placeholder="gradz.in" required>
+        <button>Add domain</button>
+      </form>
+      <p class="muted">Current domains: <%= domainsCount %></p>
+    </section>
+
+    <section id="updateEmailBox" class="card hidden-panel">
+      <h2>Update Email</h2>
+      <form method="post" action="/mail/update-email" class="form">
+        <input name="email" type="email" placeholder="example@gradz.in" required>
+        <button>Update Email</button>
+      </form>
+      <p class="muted">If the email exists, its date and time will be updated to current IST.</p>
+    </section>
+
+    <section id="deleteEmailBox" class="card hidden-panel">
+      <h2>Delete Email</h2>
+      <form method="post" action="/mail/delete-email" class="form">
+        <input name="email" type="email" placeholder="example@gradz.in" required>
+        <button class="danger">Delete Email</button>
+      </form>
+      <p class="muted">If the email exists, it will be deleted from its domain collection.</p>
+    </section>
+
+    <nav class="bottom-actions">
+      <a class="btn" href="/mail/domains">View Domains</a>
+      <button type="button" class="secondary" onclick="togglePanel('addDomainBox')">Add Domain</button>
+      <a class="btn secondary" href="/trashmails" target="_blank">Trash Mails</a>
+      <button type="button" onclick="togglePanel('updateEmailBox')">Update Email</button>
+      <button type="button" class="danger" onclick="togglePanel('deleteEmailBox')">Delete Email</button>
+    </nav>
+  </main>
+  <script src="/script.js"></script>
+</body>
+</html>

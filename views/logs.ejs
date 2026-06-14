@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live Logs</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="wrap logs-wrap">
+    <section class="card hero">
+      <h1>Live Logs</h1>
+      <p>SSE connection shows app logs dynamically without page reload.</p>
+      <div class="nav">
+        <a class="btn" href="/">Home</a>
+        <a class="btn secondary" href="/mail">Generate Mail</a>
+        <a class="btn secondary" href="/url">URL Shortner</a>
+      </div>
+    </section>
+
+    <section class="terminal-card">
+      <div class="terminal-top">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="terminal-title">SSE: Connection</span>
+      </div>
+      <pre id="logBox" class="terminal-box">Connecting to SSE logs...</pre>
+    </section>
+  </main>
+
+  <script>
+    const logBox = document.getElementById('logBox');
+    const source = new EventSource('/logs/stream');
+
+    function appendLog(line) {
+      if (logBox.textContent === 'Connecting to SSE logs...') logBox.textContent = '';
+      logBox.textContent += line + '\n';
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    source.onmessage = (event) => {
+      appendLog(JSON.parse(event.data));
+    };
+
+    source.onerror = () => {
+      appendLog('[SSE] Connection lost. Browser will retry automatically...');
+    };
+  </script>
+</body>
+</html>

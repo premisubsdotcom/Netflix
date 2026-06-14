@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Opening Link</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="wrap">
+    <section class="card result">
+      <h1>Opening link...</h1>
+      <p class="muted">If it does not open automatically, tap the button below.</p>
+      <a class="btn full" href="<%= row.longUrl %>">Open Link</a>
+      <label>Original URL / URI</label>
+      <div class="copybox">
+        <input id="longOpen" value="<%= row.longUrl %>" readonly>
+        <button onclick="copyText('longOpen')">Copy</button>
+      </div>
+    </section>
+  </main>
+  <script>
+    setTimeout(function () {
+      window.location.href = <%- JSON.stringify(row.longUrl) %>;
+    }, 300);
+  </script>
+  <script src="/script.js"></script>
+</body>
+</html>

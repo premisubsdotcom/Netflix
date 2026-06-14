@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shortener Info</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="wrap">
+    <section class="card result">
+      <h1>Shortener info</h1>
+
+      <label>Short URL</label>
+      <div class="copybox">
+        <input id="short" value="<%= row.shortUrl %>" readonly>
+        <button onclick="copyText('short')">Copy</button>
+      </div>
+
+      <label>Long URL</label>
+      <div class="copybox">
+        <input id="long" value="<%= row.longUrl %>" readonly>
+        <button onclick="copyText('long')">Copy</button>
+      </div>
+
+      <div class="qr-actions">
+        <img id="qrInfo" class="qr" src="<%= row.qrData %>" alt="QR code">
+        <button class="secondary" onclick="downloadQR('qrInfo','qr-code-<%= row.code %>.png')">Download QR Code</button>
+      </div>
+
+      <p class="muted">Deletes at <%= row.deleteIST %> IST.</p>
+      <a class="btn full" href="/url">Back</a>
+    </section>
+  </main>
+
+  <script src="/script.js"></script>
+</body>
+</html>

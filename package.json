@@ -1,0 +1,19 @@
+{
+  "name": "mail-url-shortener-vercel",
+  "version": "1.0.0",
+  "main": "api/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "node api/index.js",
+    "start": "node api/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mongodb": "^6.12.0",
+    "nanoid": "^3.3.8",
+    "qrcode": "^1.5.4",
+    "validator": "^13.12.0"
+  }
+}

@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>URL Shortener</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="wrap">
+    <section class="card hero">
+      <h1>10-Minute URL Shortener</h1>
+      <p>Short links expire automatically after 10 minutes. Supports normal URLs and UPI/deep links.</p>
+      <div class="nav">
+        <a class="btn" href="/mail">Random mail</a>
+      </div>
+    </section>
+
+    <% if(error){ %>
+      <div class="alert error"><%= error %></div>
+    <% } %>
+
+    <section class="card">
+      <h2>Create short URL</h2>
+      <form method="post" action="/url" class="form">
+        <input name="longUrl" placeholder="https://example.com/link or upi://pay?..." required>
+        <button>Shorten</button>
+      </form>
+    </section>
+
+    <% if(created){ %>
+      <section class="card result">
+        <h2>Your shortener</h2>
+
+        <label>Short URL</label>
+        <div class="copybox">
+          <input id="shortNew" value="<%= created.shortUrl %>" readonly>
+          <button onclick="copyText('shortNew')">Copy</button>
+        </div>
+
+        <label>Long URL</label>
+        <div class="copybox">
+          <input id="longNew" value="<%= created.longUrl %>" readonly>
+          <button onclick="copyText('longNew')">Copy</button>
+        </div>
+
+        <div class="qr-actions">
+          <img id="qrNew" class="qr" src="<%= created.qrData %>" alt="QR code">
+          <button class="secondary" onclick="downloadQR('qrNew','qr-code-<%= created.code %>.png')">Download QR Code</button>
+        </div>
+
+        <p class="muted">Deletes at <%= created.deleteIST %> IST.</p>
+      </section>
+    <% } %>
+
+    <section class="card">
+      <h2>Active shorteners</h2>
+      <div class="list">
+        <% rows.forEach(r => { %>
+          <a href="/url/info/<%= r.code %>" class="row">
+            <span><%= r.shortUrl %></span>
+            <small>Deletes: <%= r.deleteIST %> IST</small>
+          </a>
+        <% }) %>
+
+        <% if(!rows.length){ %>
+          <p class="muted">No active shorteners.</p>
+        <% } %>
+      </div>
+    </section>
+  </main>
+
+  <script src="/script.js"></script>
+</body>
+</html>
